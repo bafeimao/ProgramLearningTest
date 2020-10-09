@@ -166,7 +166,7 @@ floorMod方法的目的是解决一个长期存在的有关整数余数的问题
 下面考虑这样一个问题：计算一个时钟时针的位置。这里要做一个时间调整，而且要归一化为一个0~11之间的数。这很简单：（position+adjustment）%12.不过，如果这个调整为负会怎么样呢？你可能会得到一个负数。所以要引入一个分支，或者使用（（position + adjustment）%12+12）%12.不管怎样，总之都很麻烦。
 
 floorMod方法就让这个问题变得容易了：floorMod（position + adjustment,12)总会得到一个0~11之间的数。（遗憾的是，对于负除数，floorMod会得到负数结果，不过这种情况在实际中很少出现。）
-```java
+​```java
  Math类提供了一些常用的三角函数：
  Math.sin
 Math.cos
@@ -292,3 +292,67 @@ enum Size { SMALL,MEDIUM,LARGE,EXTRA_LARGE };
 Size s =size .MEDIUM;
 Size类型的变量只能存储这个类型声明中给定的某个枚举值，或者null值，null表示这个变量没有设置任何值。
 ```
+
+## 字符串
+Java字符串就是Unicode字符序列。串“Java\u2122”由5个Unicode字符J、a、v、a和。Java没有内置的字符串类型，而是在标准Java类库中提供了一个预定义类，很自然的叫做String。
+每个用双引号括起来的字符串都是String类的一个实例：
+
+```java
+String e ="";//an empty string
+String greeting = "Hello";
+```
+
+### 子串
+String 类的substring方法可以从一个较大的字符串提取出一个子串。例如:
+
+```java
+String greeting = "Hello";
+String s = greeting.substring(0,3);
+```
+
+创建了一个由字符“Hel”组成的字符串。
+substring的工作方式有一个优点：容易计算子串的长度。字符串s.substring(a,b)的长度为b-a.例如，子串“Hel”的长度为3-0=3
+
+### 拼接
+
+```java
+String expletive = "Expletive";
+        String PG13 = "deleted";
+        String message = expletive+PG13;
+        /*上述代码将“Expletivedeleted”赋给变量message（注意，单词之间没有空格， +号
+        按照给定的次序将两个字符串拼接起来。
+        当将一个字符串与一个非字符串的值进行拼接时，后者被抓换成字符串（在第5章可以看到，
+        任何一个Java 对象都可以转换成字符串）
+
+         */
+        int age = 13;
+        String rating = "PG"+age;
+        //这种特性通常用在输出语句中。
+        System.out.println("The answer is"+rating);
+        //这是一条合法的语句，并且将会打印出所希望的结果(因为单词is后面加了一个空格，输出时也会加上这个空格）
+        //如果需要把多个字符串放在一起，用一个定界符分割，可以使用静态join方法：
+        String all =String.join(" /","S","M","L","XL");
+        //all is the String"S/M/L/XL"
+```
+
+### 3.6.3 不可变字符串
+String类没有提供用于修改字符串的方法。
+
+```java
+greeting = greeting.substring(0,3) + "p!";
+```
+由于不能修改Java字符串中的字符，所以在Java文档中将String类对象成为不可变字符串，如同数字3永远是数字3一样，字符串“Hello”永远包含字符H、e、l、l和o的代码单元序列，而不能修改其中的任何一个字符。可以修改字符串变量greeting，让它饮用另外一个字符串，这就如同可以将存放3的数值变量改成存放4一样。
+    不可变字符串有一个优点：编译器可以让字符串共享。
+为了弄清具体的工作方式，可以想象将各种字符串存放在公共的存储池中。字符串变量指向存储池中相应的位置。如果复制一个字符串变量，原始字符串与复制的字符串共享相同的字符。
+    Java的设计者认为共享带来的高效率远远胜过于提取、拼接字符串所带来的低效率。查看一下程序会发现：很少需要修改字符串，而是往往需要对字符串进行比较
+### 3.6.4检测字符串是否相等
+可以使用equals方法检测两个字符串是否相等。对于表达式：
+s.equals(t)	
+如果字符串s与字符串t想等，则返回true；否则，返回false。需要注意，s与t可以是字符串变量，也可以是字符串字面两。例如，下列表达式是合法的：
+    "Hello".equals(greeting)
+    要想检测两个字符串是否相等，而不区分大小写，可以使用equalsIgnoreCase方法。
+    "Hello".equalsIgnoreCase("hello")
+    一定不要使用==运算符检测两个字符串是否相等！这个运算符只能够确定两个字符串是否放置在同一个位置上。当然，如果字符串放置在同一个位置上，它们必然相等。但是，完全有可能将内容相同的多个字符串的拷贝放置在不同的位置上。
+    如果虚拟机始终将相同的字符串共享，就可以使用==运算符检测是否相等。但实际上只有字符串常量是共享的，而+或substring等操作产生的结果并不是共享的。因此，千万不要使用==运算符测试字符串的相等性，一面在程序中出现糟糕的bug。从表面上看，zhezhongbug很像随机产生的间歇性错误。
+#### 3.6.5 空值与Null串
+空串""是长度为0的字符串。可以调用以下代码检查一个字符串是否为空
