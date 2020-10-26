@@ -355,4 +355,35 @@ s.equals(t)
     一定不要使用==运算符检测两个字符串是否相等！这个运算符只能够确定两个字符串是否放置在同一个位置上。当然，如果字符串放置在同一个位置上，它们必然相等。但是，完全有可能将内容相同的多个字符串的拷贝放置在不同的位置上。
     如果虚拟机始终将相同的字符串共享，就可以使用==运算符检测是否相等。但实际上只有字符串常量是共享的，而+或substring等操作产生的结果并不是共享的。因此，千万不要使用==运算符测试字符串的相等性，一面在程序中出现糟糕的bug。从表面上看，zhezhongbug很像随机产生的间歇性错误。
 #### 3.6.5 空值与Null串
-空串""是长度为0的字符串。可以调用以下代码检查一个字符串是否为空
+空串""是长度为0的字符串。可以调用以下代码检查一个字符串是否为空:
+if(str.length() ==0)
+或
+if(str.equals(""))
+    空串是一个Java对象，有自己的串长度（0）和内容（空）。String变量还可以存放一个特殊的值，名为null，这表示目前没有任何对象与该变量关联。要检查一个字符串是否为null，要使用以下条件：
+    if(str == null)
+    有时要检查一个字符串既不是null也不为空串，这种情况下就需要使用以下条件：
+    if(str != null && str.length() != 0)
+    首先要检查str不为null。
+#### 3.6.6码点与代码单元
+    Java字符串由char值序列组成。从3.3.3节“char类型”已经看到，char数据类型是一个采用UTF-16编码表示Unicode码点的代码单元。大多数的常用Unicode 字符使用一个代码单元就可以表示，而辅助字符需要一对代码单元表示。例如：
+```java
+String greeting = "Hello";
+        int n = greeting.length();//is 5
+        //要想得到实际的长度，即码点数量，可以调用：
+        int cpCount = greeting.codePointCount(0,greeting.length());
+        //调用s.charAt(n)将返回位置n的代码单元，n介于0 ~ s.length()-1之间。例如：
+        char first = greeting.charAt(0);// first is 'H'
+        char last = greeting.charAt(4);// last is 'o'
+        //要想得到第i个码点，应该使用下列语句
+        int index = greeting.offsetByCodePoints(0,1);
+        int cp = greeting.codePointAt(index);
+```
+#### String API
+Java中的String类包含了50多个方法。令人惊讶的是绝大多数都很有用，可以设想使用的频率非常高。下面的API注释汇总了一部分最常用的方法。
+
+![image-20201022165518312](C:\Users\ycd20\AppData\Roaming\Typora\typora-user-images\image-20201022165518312.png)
+
+![image-20201022165536562](C:\Users\ycd20\AppData\Roaming\Typora\typora-user-images\image-20201022165536562.png)
+
+#### 3.6.8 阅读联机API文档
+String类包含许多方法，而且，在标准库中有几千个类，方法数量更加惊人，要想记住所有的类和方法是一件不太可能的事情。因此，学会使用在线API文档十分重要，从中可以查阅到标准类库中的所有类
