@@ -386,4 +386,20 @@ Java中的String类包含了50多个方法。令人惊讶的是绝大多数都�
 ![image-20201022165536562](C:\Users\ycd20\AppData\Roaming\Typora\typora-user-images\image-20201022165536562.png)
 
 #### 3.6.8 阅读联机API文档
-String类包含许多方法，而且，在标准库中有几千个类，方法数量更加惊人，要想记住所有的类和方法是一件不太可能的事情。因此，学会使用在线API文档十分重要，从中可以查阅到标准类库中的所有类
+String类包含许多方法，而且，在标准库中有几千个类，方法数量更加惊人，要想记住所有的类和方法是一件不太可能的事情。因此，学会使用在线API文档十分重要，从中可以查阅到标准类库中的所有类和方法。
+
+#### 3.6.9 构件字符串
+由较短的字符串构建字符串，例如，按键或来自文件中的单词。采用字符串连接的方式达到此目的的效率比较低。每次连接字符串，都会构建一个新的String对象，既耗时，又浪费空间。使用StringBuilder类就可以避免这个问题的发生。
+
+```java
+public static void main(String[] args) {
+        StringBuilder builder = new StringBuilder();
+        //当每次需要添加一部分内容时，就调用append方法。
+        builder.append(ch);
+        builder.append(str);
+        //在需要构件字符串时调用toString方法，可以得到一个String对象，其中班喊了构建器中的字符序列。
+        String completedString = builder.toString();
+    }
+```
+
+
